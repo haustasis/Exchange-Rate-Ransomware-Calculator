@@ -4,18 +4,20 @@ const currencyEl_two = document.getElementById('currency-two');
 const amountEl_two = document.getElementById('amount-two');
 
 const rateEl = document.getElementById('rate');
-const swap = document.getElementById('swap');
+// const swap = document.getElementById('swap');
+
+// let swapFlag = false;
 
 // Fetch exchange rates and update the DOM
 function calculate() {
   const currency_one = currencyEl_one.value;
   const currency_two = currencyEl_two.value;
 
-  fetch(`https://api.exchangerate-api.com/v4/latest/${currency_one}`)
+  fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${currency_one}&vs_currencies=${currency_two}
+  `)
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data);
-      const rate = data.rates[currency_two];
+      const rate = data[`${currency_one}`][`${currency_two}`];
 
       rateEl.innerText = `1 ${currency_one} = ${rate} ${currency_two}`;
 
@@ -29,11 +31,11 @@ amountEl_one.addEventListener('input', calculate);
 currencyEl_two.addEventListener('change', calculate);
 amountEl_two.addEventListener('input', calculate);
 
-swap.addEventListener('click', () => {
-  const temp = currencyEl_one.value;
-  currencyEl_one.value = currencyEl_two.value;
-  currencyEl_two.value = temp;
-  calculate();
-});
+// swap.addEventListener('click', () => {
+//   const temp = currencyEl_one.value;
+//   currencyEl_one.value = currencyEl_two.value;
+//   currencyEl_two.value = temp;
+//   calculate();
+// });
 
 calculate();
